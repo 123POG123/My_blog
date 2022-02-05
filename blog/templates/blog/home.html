@@ -1,6 +1,45 @@
 {% extends 'base.html' %}
+{% load blog_tags %}
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>home</h1>
+    <div class="container mt-4 d-flex">
+        <div class="row row-cols-1 row-cols-md-3 g-2">
+            {% for i in blog %}
+                <div class="col  col_card">
+                    <a href="{{ i.get_absolute_url }}">
+                        <div class="card">
+                            <img src="{{ i.image.url }}" class="card-img-top" alt="{{ i.title|truncatewords:10 }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ i.title }}</h5>
+                                <p class="card-text">{{ i.body|truncatewords:20 }}</p>
+                            </div>
+                            <p class="tags">
+                                Категория:
+                                {% for tag in i.tags.all %}
+                                    <a href="{% url "blog:home_tag_type" tag.slug %}">
+                                        {{ tag.name }}</a>
+                                    {% if not tag %}
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row w-auto another_blog">
+            <h4>Всего Статьей : {% total_post %}</h4>
+            <p>
+                <a href="{% url "blog:post_feed" %}">Subscribe to my RSS feed</a>
+            </p>
+            <hr>
+            <p5>Последние статьи:</p5>
+            {% show_latest 3 %}
+        </div>
+    </div>
+    <div class="container">
+        {% include 'blog/components/pagination.html' with page=blog %}
+    </div>
+
 {% endblock %}

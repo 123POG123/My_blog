@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+from .config.main_var import *
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -17,6 +19,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+SITE_ID = 1
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,7 +30,15 @@ INSTALLED_APPS = [
 
     'blog.apps.BlogConfig',
 
+    'crispy_forms',
+    'bootstrap4',
+    'taggit',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'django.contrib.postgres',
+
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -94,6 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
+
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'Europe/Moscow'
@@ -114,3 +126,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Send mail
+
+
+
+# Redirect login
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login/'
+LOGOUT_URL = 'logout'

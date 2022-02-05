@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+    <div class="container  d-flex mt-4">
+        <div class="row col-6">
+            <h1>Войти</h1>
+            <hr>
+            <p>Пожалуйста введите логин и пароль:</p>
+            <form method="post">
+                {{ form|crispy }}
+                {% csrf_token %}
+                <p><input class="btn btn-outline-info mt-2" type="submit" value="Войти"></p>
+            </form>
+        </div>
+        <div class="text-center row col-6 mt-5">
+            <h4>Просмотр контента только для <br>
+                зарегестрированных пользователей !!! </h4>
+        </div>
+    </div>
+{% endblock %}

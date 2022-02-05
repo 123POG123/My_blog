@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title|truncatewords:5 }}{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mb-4">
+        <div class="card mb-3 text-center mt-2">
+            <img src="{{ post.image.url }}" class="card-img-top img_size img-thumbnail" alt="{{ post.title|truncatewords:10 }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title|title }}</h5>
+                <p class="card-text">{{ post.body|linebreaks }}</p>
+                <p class="card-text"><small class="text-muted">Автор: {{ post.user|title }}</small></p>
+                <p class="card-text"><small class="text-muted">Опубликованно: {{ post.created }}</small></p>
+            </div>
+        </div>
+        <a href="{% url 'blog:home' %}" class="btn btn-outline-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                <path fill-rule="evenodd"
+                      d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>
+            Назад</a>
+        <a href="{% url 'blog:share_post' post.id %}" class="btn btn-outline-success">Поделиться
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill"
+                 viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89.471-1.178-1.178.471L5.93 9.363l.338.215a.5.5 0 0 1 .154.154l.215.338 7.494-7.494Z"/>
+            </svg>
+        </a>
+        <br>
+        <div class="text-center">
+            {% if comments.count != 0 %}
+                <span class="mb-4">Коментаниев у статьи: </span>{{ comments.count }}
+                {% for comment in comments %}
+                    <div>
+                       <p class="bg-danger text-white d-inline-flex">
+                        {{ comment.post.user}}:
+                       </p>
+                        {{ comment.body }}
+                    </div>
+                    <br>
+                {% endfor %}
+            {% else %}
+                <span>У статьи нет коментариев</span>
+            {% endif %}
+            {% if new_comment %}
+                <h2>Ваш комментарий успешно добавлен.</h2>
+                <a href="{{ post.get_absolute_url }}">Хотите добавить коментарий</a>
+            {% else %}
+                <div class="">
+                    <form class="col-7 text-left" action="" method="POST">
+                        {% csrf_token %}
+                        {{ comment_form|crispy }}
+                        <button type="submit" class="btn btn-primary mt-1"> Отправить коментарий</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
