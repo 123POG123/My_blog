@@ -6,8 +6,6 @@ from django.urls import path, include
 
 from blog.sitemaps import BlogSiteMap
 
-
-
 sitemaps = {
     'Posts': BlogSiteMap
 }
@@ -22,4 +20,5 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

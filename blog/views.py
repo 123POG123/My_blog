@@ -6,8 +6,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from .models import Blog, Comment
-from .forms import EmailPostForm, CommentForm, SearchForm
-
+from .forms import EmailPostForm, CommentForm, UserRegistrationForm
 
 
 def post_share(request, post_id):
@@ -33,6 +32,7 @@ def post_share(request, post_id):
         'sent': sent,
     }
     return render(request, 'blog/post_share.html', context)
+
 
 @login_required
 def home(request, type_news=None):
@@ -86,3 +86,19 @@ def detail(request, year, month, day, slug):
     }
     return render(request, 'blog/details.html', context)
 
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            new_user = user_form.save(commit=False)
+            new_user.set_password(
+                user_form.cleaned_data['password']
+            )
+            new_user.save()
+            context = {'new_user': new_user}
+            return render(request, 'blog/register_done.html', context)
+    else:
+        user_form = UserRegistrationForm()
+    context = {'user_form': user_form}
+    return render(request, 'blog/register.html', context)

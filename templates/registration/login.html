@@ -8,10 +8,13 @@
             <hr>
             <p>Пожалуйста введите логин и пароль:</p>
             <form method="post">
+
                 {{ form|crispy }}
                 {% csrf_token %}
                 <p><input class="btn btn-outline-info mt-2" type="submit" value="Войти"></p>
             </form>
+            <a href="{% url 'blog:password_reset' %}">Забыли свой пароль ?</a>
+            <a class="mt-2" href="{% url 'blog:register' %}">Зарегистрироваться.</a>
         </div>
         <div class="text-center row col-6 mt-5">
             <h4>Просмотр контента только для <br>

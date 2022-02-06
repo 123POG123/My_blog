@@ -27,10 +27,10 @@
             <div class="user">
                  <span >
                      {% if request.user.is_authenticated %}
-                         Привет {{ request.user|title }} !
-                         <a href="{% url "blog:logout" %}">Выйти</a>
+                         Привет {{ request.user.first_name|title }}
+                         <a href="{% url "blog:logout" %}">Выйти </a>
                      {% else %}
-                         <a href="{% url "blog:login" %}">Войти</a>
+                         <a href="{% url "blog:login" %}">Войти </a>
                      {% endif %}
                  </span>
             </div>

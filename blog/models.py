@@ -3,6 +3,8 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from taggit.managers import TaggableManager
+from django.conf import settings
+
 
 class BlogManager(models.Manager):
     def get_queryset(self):
@@ -44,7 +46,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Blog,
                              on_delete=models.CASCADE,
                              related_name='comments')
-    name = models.CharField('Имя',max_length=100)
+    name = models.CharField('Имя', max_length=100)
     email = models.EmailField("Емаил")
     body = models.TextField('Описание')
     created = models.DateTimeField(auto_now_add=True)
@@ -58,6 +60,14 @@ class Comment(models.Model):
         return "Комментарий статьи : {}...  от пользователя {}".format(self.post, self.post.user)
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE)
+    date_of_birth = models.DateField(blank=True, null=True)
+    photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
+
+    def __str__(self):
+        return 'Профиль для пользователя {}'.format(self.user.username)
 
 # class Post(models.Model):
 #     title = models.CharField(max_length=250)
